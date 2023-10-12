@@ -1,0 +1,46 @@
+# This section computes the spherical expansion features for a 6x6x6 BaTiO3 structure (modify the number of atoms if the structure changes)
+SPEX_A: SPHERICAL_EXPANSION ...
+  SPECIES1=1-216 SPECIES2=217-432 SPECIES3=433-1080
+  HYPERPARAMS={
+    "max_radial": 6,
+    "max_angular": 1,
+    "compute_gradients": false,
+    "cutoff_function": {"type": "ShiftedCosine", "cutoff": {"value": 3.0, "unit": "AA"}, "smooth_width": {"value": 0.5, "unit": "AA"}},
+    "gaussian_density": {"type": "Constant", "gaussian_sigma": {"value": 0.5, "unit": "AA"}},
+    "radial_contribution": {"type": "GTO"}
+  }
+...
+
+
+# This instruction includes a mask contained in a separate .dat file that selects out the Ti atoms
+INCLUDE FILE=Ti-MASK.dat
+
+# This matrix-matrix multiplication averages the spherical expansion components over all Ti atoms
+SPEX_A_T: TRANSPOSE ARG=SPEX_A
+SUM_A: DOT ARG1=SPEX_A_T ARG2=MASK_A
+NUM_A: SUM ARG=MASK_A PERIODIC=NO
+
+# This gives a polarization vector that is roughly of order 1 modulus for a fully polar phase - we here divide by the number of Ti atoms and multiply by 10000 
+SUMM_A: MATHEVAL ARG1=SUM_A ARG2=NUM_A FUNC=x/y PERIODIC=NO   
+Py_A: SELECT_COMPONENTS ARG=SUMM_A COMPONENTS=50
+Pz_A: SELECT_COMPONENTS ARG=SUMM_A COMPONENTS=51
+Px_A: SELECT_COMPONENTS ARG=SUMM_A COMPONENTS=52
+Pys_A: MATHEVAL ARG1=Py_A FUNC=x*10000 PERIODIC=NO
+Pzs_A: MATHEVAL ARG1=Pz_A FUNC=x*10000 PERIODIC=NO 
+Pxs_A: MATHEVAL ARG1=Px_A FUNC=x*10000 PERIODIC=NO  
+
+# The following section computes the polarization modulus and its orientation (theta and phi angles) with respect to the z-axis taken as reference
+Pmod_A: MATHEVAL ARG1=Pxs_A ARG2=Pys_A ARG3=Pzs_A FUNC=sqrt(x*x+y*y+z*z) PERIODIC=NO
+Ptheta_A: MATHEVAL ARG1=Pzs_A ARG2=Pmod_A FUNC=acos(x/y) PERIODIC=NO
+Pphi_A: MATHEVAL ARG1=Px_A ARG2=Py_A FUNC=atan2(x,y) PERIODIC=-PI,PI
+
+# This instruction prints the polarization data to a file PVARS
+PRINT ARG=Pxs_A,Pys_A,Pzs_A,Pmod_A,Ptheta_A,Pphi_A STRIDE=1 FILE=PVARS
+
+# Metadynamics settings
+mtd:   METAD ARG=Pmod_A PACE=5 SIGMA=0.15 HEIGHT=0.5 FILE=HILLS BIASFACTOR=20 TEMP=200
+
+PRINT ARG=Pmod_A,Pxs_A,Pys_A,Pzs_A,mtd.* STRIDE=1 FILE=COLVAR
+
+FLUSH STRIDE=1
+
