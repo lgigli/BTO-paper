@@ -12,7 +12,6 @@ The following dependencies must be fulfilled by librascal
 | Package     | Required version   |
 |-------------|--------------------|
 | gcc (g++)   | 4.9 or higher      |
-| clang       | 4.0 or higher      |
 | cmake       | 2.8 or higher      |
 | Python      | 3.7 or higher      |
 
@@ -46,16 +45,16 @@ cd build
 cmake -D CMAKE_BUILD_TYPE=Release -D PKG_USER-MISC=on ../cmake
 make
 ```
-The package `PKG_USER-MISC` is used to use `i-Pi` with lammps.
+The package `PKG_USER-MISC` is needed to use `i-Pi` with lammps. If you want to have a parallel LAMMPS installation, please add the option `-D BUILD_MPI=yes`.
 
-### Plumed
+### PLUMED
 
-We first clone the plumed fork with the librascal interface
+We first clone the PLUMED fork with the librascal interface
 ```bash
 git clone --single-branch --branch hack-the-tree \
         https://github.com/agoscinski/plumed2.git plumed-librascal
 ```
-We used commit [b5e08c9f](https://github.com/agoscinski/plumed2/pull/1/commits/b5e08c9ff97fc1ab798f3a6e0c835fdbe9bcba8c) of plumed for the results of the paper. Now we clone the interface on the librascal side
+We used commit [b5e08c9f](https://github.com/agoscinski/plumed2/pull/1/commits/b5e08c9ff97fc1ab798f3a6e0c835fdbe9bcba8c) of PLUMED for the results of the paper. Now we clone a custom version of librascal in the main PLUMED folder.
 ```bash
 cd plumed-librascal
 git clone --single-branch --branch feat/plumed \
@@ -65,12 +64,13 @@ We used commit [ed1112ee](https://github.com/lab-cosmo/librascal/commit/ed1112ee
 ```bash
 cd librascal
 mkdir build
+cd build
 cmake ..
 make
 cd ../..
 ```
 
-and then plumed using
+and then PLUMED using
 ```bash
 LIBRASCAL_PATH=$PWD/librascal
 ./configure CXX=g++ --enable-cxx=14 --enable-modules=all --enable-fftw=no --enable-mpi=no --enable-asmjit --enable-rascal LDFLAGS="-L$LIBRASCAL_PATH/build/external/wigxjpf/lib -lwigxjpf -L$LIBRASCAL_PATH/build/src -lrascal" CPPFLAGS="-I$LIBRASCAL_PATH/src/ -I$LIBRASCAL_PATH/build/external/Eigen3/ -I$LIBRASCAL_PATH/build/external/wigxjpf/inc"
@@ -88,3 +88,5 @@ The output should be
 #! FIELDS time CV1
  0.000000 7.338286e+02
 ```
+
+The `metad-example/` folder contains the setup of a metadynamics run with the full i-pi/lammps/rascal stack to simulate the cubic-tetragonal phase transition of BaTiO3 (see Gigli et al., ... for additional details).
