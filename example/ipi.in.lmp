@@ -1,0 +1,22 @@
+# This lammps input uses a model built with librascal to compute energies and atomic forces of a 
+# BaTiO3 structure and passes the predictions to i-Pi to run the dynamics
+units		metal
+atom_style	atomic
+
+read_data	BaTiO3_cubic_6x6x6.input
+
+mass		1 137.327
+mass            2 47.867
+mass		3 15.999
+
+pair_style      rascal
+pair_coeff      * * none BTO_model_r2SCAN_450.json 56 22 8
+
+neighbor	0.1 bin
+timestep	0.002
+
+thermo_style custom step time temp pe etotal press vol pxx pyy pzz pxy pxz pyz
+thermo		10
+fix 1 all ipi BaTiO3 1234 unix
+
+run		10000000

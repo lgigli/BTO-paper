@@ -1,0 +1,69 @@
+<simulation verbosity= "high">
+<output prefix="BaTiO3_MD">
+    <properties stride="1" filename="out">  [ step, time{picosecond},  conserved{electronvolt}, 
+		temperature{kelvin}, kinetic_md{electronvolt}, potential{electronvolt}, pressure_md{bar}, volume{angstrom3}, ensemble_bias, 
+		ensemble_temperature{kelvin}, cell_abcABC, cell_h{angstrom}, stress_md{bar} ] </properties>
+	<trajectory filename="xc" stride="1" cell_units="angstrom"> x_centroid{angstrom} </trajectory>
+	<checkpoint stride="1"/> 
+	</output> 
+	<total_steps> 100000 </total_steps>
+	<total_time> 215700 </total_time> 
+	<prng><seed>12345</seed></prng>
+	<ffsocket mode='unix' name='driver'>
+		<latency>  1.00000000e-02</latency>
+		<slots>4</slots>
+		<port>1234</port>
+		<timeout>60.000000e+00</timeout>
+		<address>BaTiO3</address>
+	</ffsocket>
+	<ffplumed name="plumed">
+        	 <init_file mode="xyz">BaTiO3_cubic_6x6x6.xyz</init_file>
+		<plumeddat> plumed.dat </plumeddat>
+	</ffplumed>  
+		<system>
+		<initialize nbeads="1">
+			<file mode="xyz"> BaTiO3_cubic_6x6x6.xyz </file>
+			<velocities mode="thermal" units="kelvin"> 200 </velocities>
+		</initialize>
+		<forces>
+			<force forcefield='driver'>
+				<mts_weights>[0,1]</mts_weights>
+			</force>
+		</forces>
+		<motion mode="dynamics">
+			<dynamics mode="nst">
+				<barostat mode="anisotropic">
+                        <tau units="femtosecond"> 1000.0 </tau>
+                          <thermostat mode='gle'>
+                          <A shape='(5,5)'>
+			[	4.498098855452e-3,    6.594810718477e-6,    2.788030342989e-4,   -8.808265165053e-4,    5.605371493938e-3,
+                                -6.726802271646e-6,    2.079069559861e-9,    1.746169548818e-5,   -4.800164465960e-6,    1.025830873432e-5,
+                                -3.586191452340e-4,   -1.746169548818e-5,    3.287481976399e-5,    1.245698716799e-4,   -2.417657162526e-4,
+                                -2.508912543565e-4,    4.800164465960e-6,   -1.245698716799e-4,    6.449207766266e-4,    2.783583234046e-4,
+                                5.273493443008e-3,   -1.025830873432e-5,    2.417657162526e-4,   -2.783583234046e-4,    7.488477456790e-3
+                        ]
+                         </A>
+                         </thermostat>
+                        <h0> [23.985000, 0.0, 0.0, 0.0, 23.985000, 0.0, 0.0, 0.0, 23.985000]</h0>
+                    </barostat>		    
+		   		<nmts>[1,10]</nmts>
+				<timestep units="femtosecond"> 20.0 </timestep>
+				<thermostat mode='svr'>
+					<tau units='femtosecond'> 20.0 </tau>
+				</thermostat>
+			</dynamics>
+		</motion>
+		<ensemble>
+			<temperature units="kelvin"> 200 </temperature>
+			<stress units="bar"> [ 1.01325, 0.0, 0.0, 0.0, 1.01325, 0.0, 0.0, 0.0, 1.01325 ] </stress>
+			<bias>
+				<force forcefield="plumed" nbeads="1">
+					<mts_weights>[1,0]</mts_weights>
+				</force>
+            		</bias>
+		</ensemble>
+		</system>
+	<smotion mode="metad">
+     		<metad> <metaff> [ plumed ] </metaff> </metad>
+        </smotion>  
+	</simulation>

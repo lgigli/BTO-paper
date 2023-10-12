@@ -1,0 +1,15 @@
+This example shows how to run a metadynamics simulation of a 6x6x6 BaTiO3 system at 200 K, using a Machine Learning
+potential (MLP) to predict energies and atomic forces and biased using the modulus of a 
+proxy of the BaTiO3 total polarization vector as collective variable. The setup is described more extensively in 
+Gigli et al., (add arXiv reference). 
+
+You will need the following input files:
+* BaTiO3_cubic_6x6x6.input is the input structure for the initial calculation of energies and forces with LAMMPS;
+* BaTiO3_cubic_6x6x6.xyz is the i-PI input structure, that is just used to initialize the MD simulation;
+* BTO_model_r2SCAN_450.json is the MLP, built with the librascal package;
+* input_NST_MTS.xml is the i-PI input file, containing all the information of the MD settings (timestep, thermostats and barostats, target temperatures and pressures, etc.);
+* ipi.in.lmp is the LAMMPS input file - this is used to load the MLP from librascal and compute energies and forces with the cpu parallelization of LAMMPS;
+* job_NST_BaTiO3.sh is an example of a job to run the simulation on an HPC facility (modify it according to your needs but do not forget to always satisfy the dependencies listed in the main 
+README.md file)
+* plumed.dat is the input file for PLUMED, containing all the necessary information about the calculation of the collective variable and the biasing (gaussian deposition rate, height and width of the gaussian hills, etc.);
+* Ti-MASK.dat is just a mask for Ti atoms used within the plumed input.
