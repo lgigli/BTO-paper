@@ -1,5 +1,7 @@
 # BTO-paper
 
+[![DOI](https://zenodo.org/badge/702389161.svg)](https://zenodo.org/doi/10.5281/zenodo.10036255)
+
 This is a placeholder for the paper once it is published
 
 > Author1, Author2. 2023. “BTO” *...* XX (XX).
