@@ -2,10 +2,8 @@
 
 [![DOI](https://zenodo.org/badge/702389161.svg)](https://zenodo.org/doi/10.5281/zenodo.10036255)
 
-This is a placeholder for the paper once it is published
-
-> Author1, Author2. 2023. “BTO” *...* XX (XX).
-  <https://doi.org/....>.
+> L. Gigli, A. Goscinski, M. Ceriotti and G. A. Tribello, “Modeling the ferroelectric phase transition in barium titanate with DFT accuracy and converged sampling”, arXiv:2310.12579 (2023)
+< https://doi.org/10.48550/arXiv.2310.12579 >.
 
 ### Dependencies
 
