@@ -14,6 +14,7 @@ The following dependencies must be fulfilled by librascal
 | gcc (g++)   | 4.9 or higher      |
 | cmake       | 2.8 or higher      |
 | Python      | 3.7 or higher      |
+| cython      | 3.0.0 or higher    |
 
 ### i-Pi
 

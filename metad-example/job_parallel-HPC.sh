@@ -11,13 +11,13 @@
 module load gcc/11.3.0 cmake/3.23.1 openmpi/4.1.3 python/3.10.4
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 
+source $PWD/../i-pi/env.sh
 source $PWD/../plumed-librascal/sourceme.sh
 
 rm /tmp/ipi_*
 
-IPI=$PWD/../i-pi/bin/i-pi
 LAMMPS=$PWD/../lammps-librascal/build/lmp
 
-${IPI} input_NST_MTS.xml & sleep 5;\
+i-pi input_NST_MTS.xml & sleep 5;\
 srun ${LAMMPS} -in ipi.in.lmp
 
