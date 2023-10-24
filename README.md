@@ -1,6 +1,7 @@
 # BTO-paper
 
 [![DOI](https://zenodo.org/badge/702389161.svg)](https://zenodo.org/doi/10.5281/zenodo.10036255)
+[![plumID:23.043](https://www.plumed-nest.org/eggs/23/043/badge.svg)](https://www.plumed-nest.org/eggs/23/043/)
 
 > L. Gigli, A. Goscinski, M. Ceriotti and G. A. Tribello, “Modeling the ferroelectric phase transition in barium titanate with DFT accuracy and converged sampling”, arXiv:2310.12579 (2023)
 < https://doi.org/10.48550/arXiv.2310.12579 >.
@@ -14,7 +15,7 @@ The following dependencies must be fulfilled by librascal
 | gcc (g++)   | 4.9 or higher      |
 | cmake       | 2.8 or higher      |
 | Python      | 3.7 or higher      |
-| cython      | 3.0.0 or higher    |
+| cython      | 0.29.33 or higher  |
 
 ### i-Pi
 
@@ -45,6 +46,7 @@ mkdir build
 cd build
 cmake -D CMAKE_BUILD_TYPE=Release -D PKG_USER-MISC=on ../cmake
 make
+cd ../..
 ```
 The package `PKG_USER-MISC` is needed to use `i-Pi` with lammps. If you want to have a parallel LAMMPS installation, please add the option `-D BUILD_MPI=yes`.
 
