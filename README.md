@@ -93,6 +93,6 @@ Please also check that plumed can be imported as a python module with
 ```bash
 import plumed
 ```
- otherwise i-PI will not be able to call plumed while running the simulation. If this import does not succeed, plumed has not produced a python wrapper in the installation, which means that you are either missing a python installation or cython.
+ otherwise i-PI will not be able to call plumed while running the simulation. If this import does not succeed at this stage, plumed has not produced a python wrapper in the installation, which means that you are either missing a python or a cython installation.
 
 The `metad-example/` folder contains the setup of a metadynamics run with the full i-pi/lammps/rascal stack to simulate the cubic-tetragonal phase transition of BaTiO3 (see Gigli et al., ... for additional details).
