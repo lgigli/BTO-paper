@@ -57,7 +57,7 @@ We first clone the PLUMED fork with the librascal interface
 git clone --single-branch --branch hack-the-tree \
         https://github.com/agoscinski/plumed2.git plumed-librascal
 ```
-We used commit [b5e08c9f](https://github.com/agoscinski/plumed2/pull/1/commits/b5e08c9ff97fc1ab798f3a6e0c835fdbe9bcba8c) of PLUMED for the results of the paper. Now we clone a custom version of librascal in the main PLUMED folder.
+We used commit [124c83c](https://github.com/agoscinski/plumed2/commit/124c83c00e4bfc2e4a104cef888830981124e3f8) of PLUMED for the results of the paper. Now we clone a custom version of librascal in the main PLUMED folder.
 ```bash
 cd plumed-librascal
 git clone --single-branch --branch feat/plumed \
